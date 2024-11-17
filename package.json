@@ -5,6 +5,11 @@
   "version": "0.0.1",
   "publisher": "kewanfr",
   "icon": "./images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kewanfr/vscode-ext-exos-introdev.git"
+  },
+  "license": "MIT",
   "engines": {
     "vscode": "^1.95.0"
   },
