@@ -2,7 +2,7 @@
   "name": "vscode-exos-introdev",
   "displayName": "vscode-exos-introdev",
   "description": "A simple extension that show me what coding exos I've already made",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "kewanfr",
   "icon": "./images/icon.png",
   "repository": {
@@ -60,6 +60,11 @@
           "type": "number",
           "description": "The number of folder levels to use for the exos-introdev extension (default: 2)",
           "default": 2
+        },
+        "resolvedPattern": {
+          "type": "string",
+          "description": "The pattern in logFile when an exo is resolved (default: [X] [{{folderPath}}])",
+          "default": "[X] [{{folderPath}}]"
         }
       }
     },

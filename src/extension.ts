@@ -74,6 +74,7 @@ class CustomFileDecorationProvider implements vscode.FileDecorationProvider {
 
     const configFileExtensions: string[] = vscode.workspace.getConfiguration().get("fileExtensions") || [];
     const configFolderLevels: number = vscode.workspace.getConfiguration().get("folderLevels") || 1;
+    const configResolvedPattern: string = vscode.workspace.getConfiguration().get("resolvedPattern") || "";
 
     let rootPath = vscode.workspace.rootPath || "";
 
@@ -88,8 +89,10 @@ class CustomFileDecorationProvider implements vscode.FileDecorationProvider {
       folderPath = relativePath.split("/").slice(0, -1).join("/");
     }
     
+    const resolvedText = configResolvedPattern.replace("{{folderPath}}", folderPath);
+    const resolved = globalLogFileContent.includes(resolvedText);
 
-    const resolved = globalLogFileContent.includes(folderPath);
+
     if (ext === "" && configFileExtensions.includes("folder") && folderPath.split("/").length > (configFolderLevels - 1)) {
 
       console.log(folderPath, "est non résolu");
@@ -97,7 +100,9 @@ class CustomFileDecorationProvider implements vscode.FileDecorationProvider {
 
       return {
         tooltip: resolved ? "Exercice Résolu" : "Exercice non résolu",
-        badge: resolved ? "✔︎" : "·",
+        badge: resolved ? "1/1" : "·",
+        
+        // badge: resolved ? "✔︎" : "·",
         color: new vscode.ThemeColor(resolved ? "badge.background" : "testing.iconQueued"),
         // color: new vscode.ThemeColor(resolved ? "badge.background" : "badge.foreground"),
       };
