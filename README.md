@@ -21,6 +21,7 @@ This extension contributes the following settings:
 * `vscode-exos-introdev.projectsNames`: The names of the projects where the extension works (array).
 * `vscode-exos-introdev.fileExtensions`: The extensions of the files where the extension works (default: go and folders).
 * `vscode-exos-introdev.folderLevels`: The levels of the folders where the extension works (default: 2).
+* `vscode-exos-introdev.resolvedPattern`: The pattern of the resolved exos in the log file (default: [X] [{{folderPath}}]).
 
 ## Known Issues
 
@@ -39,6 +40,12 @@ Put the folers paths (ex: "recursive/exo1" and the folder "recursive/exo1" conta
 Change the logFile path in the settings if you want to use another file.
 
 Change the projectsNames, fileExtensions and folderLevels in the settings if you want to use the extension on other projects.
+
+### 1.0.2
+
+Seconde release of vscode-exos-introdev.
+
+ADD the ResolvedPattern setting to change the pattern of the resolved exos in the log file (default: [X] [{{folderPath}}]).
 
 
 ## Author
