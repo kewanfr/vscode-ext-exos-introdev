@@ -1,0 +1,85 @@
+{
+  "name": "vscode-exos-introdev",
+  "displayName": "vscode-exos-introdev",
+  "description": "A simple extension that show me what coding exos I've already made",
+  "version": "0.0.1",
+  "publisher": "kewanfr",
+  "icon": "./images/icon.png",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "icons": {
+      "my-icon-id": {
+        "description": "my icon",
+        "default": {
+          "fontPath": "myiconfont.woff",
+          "fontCharacter": "\\E001"
+        }
+      }
+    },
+    "commands": [
+        {
+          "command": "vscode-exos-introdev.showCustomFileNames",
+          "title": "Show Custom File Names"
+        }
+    ],
+    "configuration": {
+      "title": "Exos Introdev",
+      "properties": {
+        "logFile" : {
+          "type": "string",
+          "description": "The path to the log file to use for the exos-introdev extension",
+          "default": "./log.md"
+        },
+        "projectsNames": {
+          "type": "array",
+          "description": "The list of projects names to use for the exos-introdev extension (default: tp-introdev)",
+          "default": ["tp-introdev"]
+        },
+        "fileExtensions": {
+          "type": "array",
+          "description": "The list of file extensions to use for the exos-introdev extension (default: go, folder)",
+          "default": [".go", "folder"]
+        }
+      }
+    },
+    "viewsContainers": {
+        "explorer": [
+          {
+              "id": "fileDecorations",
+              "title": "Custom File Decorations"
+          }
+        ]
+    }
+  },
+  "activationEvents": [
+    "workspaceContains:log.md",
+    "onStartupFinished:fileDecorations",
+    "onView:fileDecorations",
+    "onCommand:vscode-exos-introdev.showCustomFileNames"
+  ],
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.95.0",
+    "@types/mocha": "^10.0.9",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.10.0",
+    "@typescript-eslint/parser": "^8.7.0",
+    "eslint": "^9.13.0",
+    "typescript": "^5.6.3",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1"
+  }
+}
