@@ -24,8 +24,8 @@
     },
     "commands": [
         {
-          "command": "vscode-exos-introdev.showCustomFileNames",
-          "title": "Show Custom File Names"
+          "command": "vscode-exos-introdev.decorateFiles",
+          "title": "Decorate Files"
         }
     ],
     "configuration": {
@@ -61,7 +61,7 @@
     "workspaceContains:log.md",
     "onStartupFinished:fileDecorations",
     "onView:fileDecorations",
-    "onCommand:vscode-exos-introdev.showCustomFileNames"
+    "onCommand:vscode-exos-introdev.decorateFiles"
   ],
   "scripts": {
     "vscode:prepublish": "npm run compile",
