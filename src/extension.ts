@@ -90,8 +90,13 @@ class CustomFileDecorationProvider implements vscode.FileDecorationProvider {
     }
     
     const resolvedText = configResolvedPattern.replace("{{folderPath}}", folderPath);
-    const resolved = globalLogFileContent.includes(resolvedText);
+    const resolvedTextRegex = new RegExp(resolvedText, "g");
 
+    const resolved = globalLogFileContent.match(resolvedTextRegex);
+
+    // const resolved = globalLogFileContent.includes(resolvedText);
+    // console.log("resolved", resolved);
+    // console.log("resolvedText", resolvedText);
 
     if (ext === "" && configFileExtensions.includes("folder") && folderPath.split("/").length > (configFolderLevels - 1)) {
 
