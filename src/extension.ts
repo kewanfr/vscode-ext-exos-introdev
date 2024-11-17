@@ -21,84 +21,60 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const logFilePath = path.join(rootPath, typeof logFile === "string" ? logFile : "");
 
+  if (!fs.existsSync(logFilePath)) {
+    console.log("Le fichier de log n'existe pas");
+    return;
+    // return vscode.window.showInformationMessage("Le fichier de log n'existe pas");
+  }
+
   globalLogFileContent = await fs.readFileSync(typeof logFilePath === "string" ? logFilePath : "./log.md", "utf8");
 
+  const configProjectsNames: string[] = vscode.workspace.getConfiguration().get("projectsNames") || [];
+
+  const projetName = vscode.workspace.name || "";
+
+  if (!configProjectsNames.includes(projetName)) {
+    console.log("Le projet n'est pas configuré dans les paramètres");
+    // return vscode.window.showInformationMessage("Le projet n'est pas configuré dans les paramètres");
+    return;
+  }
+  var fileDecorationProviderDisposable = vscode.window.registerFileDecorationProvider(fileDecorationProvider)
 
   context.subscriptions.push(
-    vscode.window.registerFileDecorationProvider(fileDecorationProvider)
+    fileDecorationProviderDisposable
   );
 
-  let disposable = vscode.commands.registerCommand(
-    "vscode-exos-introdev.showCustomFileNames",
-    async () => {
-      // The code you place here will be executed
-      // every time your command is executed
-      // Display a message box to the user
+  // on file logFile change
+  vscode.workspace.createFileSystemWatcher(logFilePath).onDidChange(async () => {
+    console.log("Le fichier de log a changé");
+    globalLogFileContent = await fs.readFileSync(logFilePath, "utf8");
 
-    }
+    fileDecorationProviderDisposable.dispose();
+    fileDecorationProviderDisposable = vscode.window.registerFileDecorationProvider(fileDecorationProvider);
+    // vscode.window.showInformationMessage("Le fichier de log a changé");
+  });
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "vscode-exos-introdev.decorateFiles",
+      async (uri: vscode.Uri) => {
+        console.log("Décorer les fichiers");
+      }
+    )
   );
-
-  context.subscriptions.push(disposable);
 }
 
-// class 
-
 class CustomFileDecorationProvider implements vscode.FileDecorationProvider {
-  // Fonction pour définir les décorations des fichiers
   onDidChangeFileDecorations?:
     | vscode.Event<vscode.Uri | vscode.Uri[]>
     | undefined;
 
   provideFileDecoration(uri: vscode.Uri): vscode.FileDecoration | undefined  {
-    // Définissez une logique pour masquer le nom original du fichier et ajouter une icône
 
-    /**
-     * Configuration object containing various settings.
-     * 
-     * @property {string} logFile - The path to the log file.
-     * @property {string[]} projectsNames - An array of project names.
-     * @property {string[]} fileExtensions - An array of file extensions.
-     */
-    // const config = {
-    //   logFile:  vscode.workspace
-    //     .getConfiguration()
-    //     .get("logFile"),
-    //   projectsNames:  vscode.workspace
-    //     .getConfiguration()
-    //     .get("projectsNames"),
-    //   fileExtensions:  vscode.workspace
-    //     .getConfiguration()
-    //     .get("fileExtensions"),
-    // };
 
     // const configLogFile: string = vscode.workspace.getConfiguration().get("logFile");
-    // const configProjectsNames: string[] = vscode.workspace.getConfiguration().get("projectsNames");
     const configFileExtensions: string[] = vscode.workspace.getConfiguration().get("fileExtensions") || [];
 
-    // return {
-    //   tooltip: "Exercice Résolu",
-    //   badge: "✅",
-    //   color: new vscode.ThemeColor("charts.blue"),
-    // };
-    // is folder 
-    // if (uri.fsPath.endsWith("/")) {
-    //   return {
-    //     tooltip: "Dossier",
-    //     badge: "📁",
-    //     color: new vscode.ThemeColor("charts.green"),
-    //   };
-    // }
-
-
-    // if (uri.fsPath === vscode.workspace.rootPath) {
-    //   return {
-    //     tooltip: "Projet",
-    //     badge: "📁",
-    //     color: new vscode.ThemeColor("charts.green"),
-    //   };
-    // }
-
-    // is file
     let rootPath = vscode.workspace.rootPath || "";
 
     const ext = path.extname(uri.path);
@@ -111,13 +87,8 @@ class CustomFileDecorationProvider implements vscode.FileDecorationProvider {
     } else {
       folderPath = relativePath.split("/").slice(0, -1).join("/");
     }
-    // const folderPath = relativePath.split("/").slice(0, -1).join("/");
+    
 
-    // console.log("fspath", path.extname(uri.path), "path", uri.path, "relativePath", relativePath, "fileName", fileName);
-
-    // if is a folder (if not ".*") 
-    // console.log(uri.path, ext === "", configFileExtensions.includes("folder"), folderPath.includes("/"), globalLogFileContent.includes(folderPath))
-    // console.log(folderPath.split("/").length, folderPath, ext === "", ext);
     const resolved = globalLogFileContent.includes(folderPath);
     if (ext === "" && configFileExtensions.includes("folder") && folderPath.split("/").length > 1) {
 
@@ -134,8 +105,6 @@ class CustomFileDecorationProvider implements vscode.FileDecorationProvider {
     }
 
     if (configFileExtensions.includes(ext)) {
-
-
       return {
         tooltip: resolved ? "Exercice Résolu" : "Exercice non résolu",
         badge: resolved ? "✔︎" : "·",
