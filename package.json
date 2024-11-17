@@ -2,7 +2,7 @@
   "name": "vscode-exos-introdev",
   "displayName": "vscode-exos-introdev",
   "description": "A simple extension that show me what coding exos I've already made",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "publisher": "kewanfr",
   "icon": "./images/icon.png",
   "repository": {
