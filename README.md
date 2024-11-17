@@ -43,10 +43,13 @@ Change the projectsNames, fileExtensions and folderLevels in the settings if you
 
 ### 1.0.2
 
-Seconde release of vscode-exos-introdev.
+Second release of vscode-exos-introdev.
 
-ADD the ResolvedPattern setting to change the pattern of the resolved exos in the log file (default: [X] [{{folderPath}}]).
+ADD the resolvedPattern setting to change the pattern of the resolved exos in the log file (default: [X] [{{folderPath}}]).
 
+### 1.0.3
+
+Simple fix on the resolvedPattern setting.
 
 ## Author
 
