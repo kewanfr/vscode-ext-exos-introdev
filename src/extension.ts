@@ -72,8 +72,8 @@ class CustomFileDecorationProvider implements vscode.FileDecorationProvider {
   provideFileDecoration(uri: vscode.Uri): vscode.FileDecoration | undefined  {
 
 
-    // const configLogFile: string = vscode.workspace.getConfiguration().get("logFile");
     const configFileExtensions: string[] = vscode.workspace.getConfiguration().get("fileExtensions") || [];
+    const configFolderLevels: number = vscode.workspace.getConfiguration().get("folderLevels") || 1;
 
     let rootPath = vscode.workspace.rootPath || "";
 
@@ -90,7 +90,7 @@ class CustomFileDecorationProvider implements vscode.FileDecorationProvider {
     
 
     const resolved = globalLogFileContent.includes(folderPath);
-    if (ext === "" && configFileExtensions.includes("folder") && folderPath.split("/").length > 1) {
+    if (ext === "" && configFileExtensions.includes("folder") && folderPath.split("/").length > (configFolderLevels - 1)) {
 
       console.log(folderPath, "est non résolu");
       console.log(folderPath.split("/").length, folderPath);
